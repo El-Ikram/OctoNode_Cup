@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="leaderboard.css" />
+</head>
+<body>
+  <header class="wrap">
+    <div class="title-row">
+      <h1><span class="trophy">🏆</span> GNN Mini Competition Leaderboard <span class="trophy">🏆</span></h1>
+      <p class="sub">Chest X-ray classification • Normal vs Pneumonia</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls card">
+      <div class="control">
+        <label for="search">Search</label>
+        <input id="search" type="search" placeholder="Search team, model, notes…🔍" />
+      </div>
+
+      <div class="control">
+        <label for="modelFilter">Model</label>
+        <select id="modelFilter">
+          <option value="all">All</option>
+          <option value="all">GAT</option>
+          <option value="all">GCN</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="dateFilter">Date</label>
+        <select id="dateFilter">
+          <option value="all">All</option>
+          <option value="last30">Last week</option>
+          <option value="last30">Last 30 days</option>
+          <option value="last30">Last 90 days</option>
+          <option value="last180">Last 180 days</option>
+        </select>
+      </div>
+
+      
+      
+      <div class="control">
+        <label>Columns</label>
+        <div class="column-actions">
+          <button id="showAllCols">Show all</button>
+          <button id="hideAllCols">Hide all</button>
+        </div>
+        <div class="checks" id="columnToggles"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="table-wrap">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th data-key="rank" data-sort="number">Rank</th>
+              <th data-key="team" data-sort="string">Team</th>
+              <th data-key="model" data-sort="string">Model</th>
+              <th data-key="score" data-sort="number">Score</th>
+              <th data-key="timestamp_utc" data-sort="string">Date (UTC)</th>
+              <th data-key="notes" data-sort="string">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rank">1</td>
+              <td>DeepHealth</td>
+              <td>GNN-Transformer</td>
+              <td class="score">0.972</td>
+              <td>2026-01-26</td>
+              <td>SOTA 🚀</td>
+            </tr>
+            <tr>
+              <td class="rank">2</td>
+              <td>MedVision</td>
+              <td>GAT</td>
+              <td class="score">0.958</td>
+              <td>2026-01-21</td>
+              <td>Strong baseline</td>
+            </tr>
+            <tr>
+              <td class="rank">3</td>
+              <td>XRayAI</td>
+              <td>GCN</td>
+              <td class="score">0.931</td>
+              <td>2026-01-22</td>
+              <td>Stable model</td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <span id="status">Loading leaderboard…</span>
+      </div>
+    </section>
+    <section class="stats wrap">
+      <div class="stat-card">
+        <div class="icon">👥</div>
+        <div class="value" id="statParticipants">0</div>
+        <div class="label">Participants</div>
+      </div>
+    
+      <div class="stat-card">
+        <div class="icon">🏆</div>
+        <div class="value" id="statBest">–</div>
+        <div class="label">Best Score</div>
+      </div>
+    
+      <div class="stat-card">
+        <div class="icon">📈</div>
+        <div class="value" id="statAvg">–</div>
+        <div class="label">Average Score</div>
+      </div>
+    
+      <div class="stat-card">
+        <div class="icon">💻</div>
+        <div class="value" id="statModel">–</div>
+        <div class="label">Top Model</div>
+      </div>
+    </section>
+    
+    <a href="https://github.com/El-Ikram/DeepLung_Cup" class="github-link">
+      <button id="githubBtn">⮜ Back to GitHub</button>
+    </a>
+    
+  </main>
+
+  <script src="leaderboard.js"></script>
+</body>
+</html>
