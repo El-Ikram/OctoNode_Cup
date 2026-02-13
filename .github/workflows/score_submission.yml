@@ -2,16 +2,23 @@ name: Score Submission
 
 on:
   pull_request:
-    types: [closed]
-    branches: [ main ]
+    paths:
+      - "leaderboard/submission.csv"
 
 jobs:
   score:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout competition repo
+        uses: actions/checkout@v4
+
+      - name: Checkout private evaluation repo
+        uses: actions/checkout@v4
+        with:
+          repository: YOUR_USERNAME/github-social-eval
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: private_eval
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -19,42 +26,30 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Decode private labels
-        run: |
-          echo "${{ secrets.PRIVATE_LABELS }}" | base64 --decode > private_test_labels.csv
-
-      - name: Find submission file
-        id: findfile
-        run: |
-          FILE=$(ls submissions/*.csv | head -n 1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
+        run: pip install -r requirements.txt
 
       - name: Validate submission
         run: |
           python competition/validate_submission.py \
-            ${{ steps.findfile.outputs.file }} \
-            data/target_test.csv
+          leaderboard/submission.csv \
+          private_eval/test_labels.csv
 
-      - name: Evaluate submission
-        id: score
+      - name: Evaluate submission (Macro F1)
+        id: eval
         run: |
           SCORE=$(python competition/evaluate.py \
-            ${{ steps.findfile.outputs.file }} \
-            private_test_labels.csv | grep SCORE= | cut -d= -f2)
+          leaderboard/submission.csv \
+          private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
           echo "score=$SCORE" >> $GITHUB_OUTPUT
 
-      - name: Append to leaderboard.csv
+      - name: Append to leaderboard
         run: |
-          echo "$(date -u +%Y-%m-%dT%H:%M:%SZ),${{ github.actor }},model,${{ steps.score.outputs.score }},PR #${{ github.event.pull_request.number }}" >> leaderboard/leaderboard.csv
+          echo "${{ github.actor }},GCN,${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ"),Auto submission" >> leaderboard/leaderboard.csv
 
       - name: Commit leaderboard update
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add leaderboard/leaderboard.csv
-          git commit -m "Add submission result"
+          git commit -m "Update leaderboard"
           git push
-
