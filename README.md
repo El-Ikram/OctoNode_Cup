@@ -32,7 +32,8 @@ Graph Statistics:
 * Features: 128-dimensional node features.
 * Task: Binary classification.
 
-The GitHub Social Network dataset used in this challenge is publicly available through the Stanford Network Analysis Project (SNAP).\
+The GitHub Social Network dataset used in this challenge is publicly available through the Stanford Network Analysis Project (SNAP).
+
 🔗 **Dataset link:**  [Dataset](https://snap.stanford.edu/data/github-social.html)
 
 ## <img width="40" height="40" alt="image" src="https://github.com/user-attachments/assets/6e05cfef-3064-4d6d-bf4b-ea9259f21e11" />Evaluation Metric
@@ -68,3 +69,65 @@ To ensure fair competition:
 4. Keep your model simple and interpretable (deeper is not always better).
    
 Think of this as a “from-scratch GNN challenge”, no shortcuts, no pretrained magic, just pure graph learning✨
+
+## 📤Submission
+Ready to compete? Follow these steps to get your model on the leaderboard 
+* Each participant needs to fork this repository to his GitHub account.
+* Each participant needs to use the provided starter code as a baseline and implement your GNN model (while respecting all constraints!).
+* Each participant after generating predictions for the test set needs to save them as a CSV file with the required format:\
+   Participant , Score .
+* Score the submissions.
+* Create a Pull Request.
+* After evaluating the submission, the score will appear on the leaderboard.
+
+ 🌟Higher scores climb higher🌟
+  
+## 🏆Leaderboard
+The competition features a **dynamic, automatically updated leaderboard**.
+* All scores are stored and displayed in real-time on docs/leaderboard.html.
+* Participants are ranked according to the official evaluation metric (Macro F1-score).
+* Each entry shows: Rank, Team Name, Score, and Submission Date.
+* The leaderboard updates automatically whenever a valid submission is made via a Pull Request, no manual intervention is needed.
+
+✨Watch your team climb the ranks as you submit! 
+
+[View the live leaderboard](https://El-Ikram.github.io/challenge/leaderboard.html)
+
+## 🗓️Timeline
+Start Date: 02/15/2026
+
+Submission Deadline: 02/28/2026
+
+## 🚨Disclaimer
+
+This challenge is intended for educational purposes only.\
+
+## ❓ FAQ
+
+**Q: Can I use CNNs or Transformers?**  
+A: No. This is a GNN-only challenge.
+
+**Q: Can I use pretrained models?**  
+A: No pretrained embeddings or models are allowed.
+
+**Q: Can I submit multiple times?**  
+A: No, -------------------
+
+**Q: Can I submit after the deadline?**
+A: No, unfortunately submissions are not accepted after the deadline.
+
+
+## 📚References
+* Basira's lab lectures on GNNs: [DGL_Videos](https://www.youtube.com/watch?v=gQRV_jUyaDw&list=PLug43ldmRSo14Y_vt7S6vanPGh-JpHR7T).
+* Dataset: [Dataset](https://snap.stanford.edu/data/github-social.html).
+
+## 📄License
+This project is released under the **MIT License**.  
+You are free to use, modify, and distribute the code for research and educational purposes, with proper attribution.\
+The GitHub Social Network dataset is provided by Snap and is subject to its original license and usage terms.
+
+See the [LICENSE](LICENSE) file for details.
+
+##
+<p align="center"><b>Don’t worry about being perfect, just try!</b></p>
+<p align="center"><b>Good Luck!🤝</b></p>
