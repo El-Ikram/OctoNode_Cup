@@ -1,7 +1,7 @@
-
+# competition/evaluate.py
 import pandas as pd
 import sys
-from metrics import binary_auc
+from metrics import macro_f1
 
 def main(pred_path, label_path):
     preds = pd.read_csv(pred_path).sort_values("id")
@@ -11,7 +11,7 @@ def main(pred_path, label_path):
     if len(merged) != len(labels):
         raise ValueError("ID mismatch between predictions and labels")
 
-    score = binary_auc(merged["y_true"], merged["y_pred"])
+    score = macro_f1(merged["y_true"], merged["y_pred"])
     print(f"SCORE={score:.8f}")
 
 if __name__ == "__main__":
