@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0  # important to get full history for push
 
       - name: Set up Python
         uses: actions/setup-python@v5
