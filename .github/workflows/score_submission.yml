@@ -17,6 +17,7 @@ jobs:
       - name: Checkout competition repo
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       # Checkout private evaluation repo
@@ -62,4 +63,4 @@ jobs:
           git commit -m "Update leaderboard"
 
           # Push back to the same PR branch
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin ${{ github.head_ref }}
