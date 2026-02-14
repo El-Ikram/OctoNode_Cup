@@ -3,7 +3,7 @@ name: Score Submission
 on:
   pull_request:
     paths:
-      - "leaderboard/submission.csv"
+      - "submissions/submission.csv"
 
 jobs:
   score:
@@ -30,8 +30,8 @@ jobs:
 
       - name: Validate submission
         run: |
-          python competition/validate_submission.py \
-          leaderboard/submission.csv \
+          python competition/evaluate.py \
+          submissions/submission.csv \
           private_eval/test_labels.csv
 
       - name: Evaluate submission (Macro F1)
