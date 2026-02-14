@@ -38,6 +38,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+                # Validate submission format
+      - name: Validate submission
+        run: |
+          python competition/validate_submission.py \
+          submissions/submission.csv \
+          private_eval/test_nodes.csv
+
       # Evaluate submission
       - name: Evaluate submission
         id: eval
