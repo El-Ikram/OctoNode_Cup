@@ -51,10 +51,9 @@ Shape: (N, N)
 Type: Sparse matrix
 
 The adjacency matrix 𝐴 represents connections between nodes.
-If node i is connected to node j, then: 𝐴𝑖𝑗 = 1 Otherwise: 𝐴𝑖𝑗 = 0
+If node i is connected to node j, then: 𝐴ᵢⱼ = 1 Otherwise: 𝐴ᵢⱼ = 0
 
 * Node Feature Matrix
-
 File: node_features.csv
 
 Shape: (N, F)
@@ -62,7 +61,8 @@ Shape: (N, F)
 Each row corresponds to one node.
 Each column represents a feature.
 
-𝑋 ∈ 𝑅^𝑁×𝐹
+$X \in \mathbb{R}^{N \times F}$
+
 
 Where:
 𝑁 = number of nodes and 𝐹 = number of features.
@@ -110,10 +110,16 @@ Ready to compete? Follow these steps to get your model on the leaderboard
 * Each participant needs to fork this repository to his GitHub account.
 * Each participant needs to use the provided starter code as a baseline and implement your GNN model (while respecting all constraints!).
 * Each participant after generating predictions for the test set needs to save them as a CSV file with the required format:\
-   Participant , Score .
-* Score the submissions.
-* Create a Pull Request.
-* After evaluating the submission, the score will appear on the leaderboard.
+   id , name , ml_target .
+* Ensure:
+    The file contains predictions for all test nodes.\
+    The order of IDs matches test_nodes.csv.\
+    The file name is your_team_name_submission.csv
+* Place your submission.csv file inside the submissions/ folder and create a Pull Request.
+* Once your Pull Request is opened:\
+    Your submission will be automatically evaluated.\
+    The score will be computed using the hidden test labels.\
+    Your result will be added to the leaderboard.
 
  🌟Higher scores climb higher🌟
   
@@ -131,7 +137,7 @@ The competition features a **dynamic, automatically updated leaderboard**.
 ## 🗓️Timeline
 Start Date: 02/15/2026
 
-Submission Deadline: 02/28/2026
+Submission Deadline: 03/15/2026
 
 ## 🚨Disclaimer
 
@@ -146,7 +152,7 @@ A: No. This is a GNN-only challenge.
 A: No pretrained embeddings or models are allowed.
 
 **Q: Can I submit multiple times?**  
-A: No, -------------------
+A: Not this time! Each team can submit only once, so take a moment to double-check your model and results.
 
 **Q: Can I submit after the deadline?**
 A: No, unfortunately submissions are not accepted after the deadline.
