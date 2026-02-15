@@ -44,7 +44,7 @@ The competition dataset represents a graph 𝐺 = (𝑉,𝐸) where: 𝑉 = node
 
 🧩 Graph Components:
 * Adjacency Matrix:
-File: adjacency_matrix.npz
+File: [adjacency_matrix.npz](data/public/adjacency_matrix.npz)
 
 Shape: (N, N)
 
@@ -54,7 +54,7 @@ The adjacency matrix 𝐴 represents connections between nodes.
 If node i is connected to node j, then: 𝐴ᵢⱼ = 1 Otherwise: 𝐴ᵢⱼ = 0
 
 * Node Feature Matrix
-File: node_features.csv
+File: [node_features.npz](data/public/node_features.npz)
 
 Shape: (N, F)
 
