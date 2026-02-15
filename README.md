@@ -54,7 +54,7 @@ The adjacency matrix 𝐴 represents connections between nodes.
 If node i is connected to node j, then: 𝐴ᵢⱼ = 1 Otherwise: 𝐴ᵢⱼ = 0
 
 * Node Feature Matrix
-File: [node_features.npz](data/public/node_features.npy)
+File: [node_features.npy](data/public/node_features.npy)
 
 Shape: (N, F)
 
