@@ -134,6 +134,9 @@ The competition features a **dynamic, automatically updated leaderboard**.
 
 [View the live leaderboard](https://El-Ikram.github.io/OctoNode_Cup/leaderboard.html)
 
+📋 **Registration Form:** [Fill out this Google Form](https://docs.google.com/forms/d/e/1FAIpQLSewxnXsxIdUqJRO_LFKe2cYDwgy77gOi1SL546cuJcCKVXyGg/viewform?usp=publish-editor)
+
+
 ## 🗓️Timeline
 Start Date: 02/15/2026
 
