@@ -1,11 +1,11 @@
 :root{
-  --bg:#4e5d7d;
-  --panel:#1e293b;
-  --text:#f8fafc;
-  --muted:#94a3b8;
+  --bg:#faf8f5;
+  --panel:#d0e1d4;
+  --text:#0c1821;
+  --muted:#f7fff6;
   --border:#334155;
-  --accent:#7aa2f7;
-  --good:#2dd4bf;
+  --accent:#ae9eb5;
+  --good:#889a71;
 }
 
 
@@ -23,9 +23,13 @@ header .title-row{padding:10px 0;
   align-items: center;
   text-align: center;
   gap: 6px;
-  padding: 24px 16px;}
+  padding: 24px 16px;
+  }
 h1{margin:0 0 6px 0;font-size:28px;letter-spacing:.2px}
-.sub{margin:0;color:var(--muted);max-width:70ch;line-height:1.4}
+header .sub {
+  color: #000000 !important;
+}
+.sub{margin:0;max-width:70ch;line-height:1.4; }
 .card{
   background:var(--panel);
   border:1px solid var(--border);
@@ -254,3 +258,9 @@ td.hidden, th.hidden{
   color: var(--muted);
   margin-top: 4px;
 }
+
+tbody tr:hover {
+  background: #ffffff;
+  color: #000000;   /* make text readable on white */
+}
+
