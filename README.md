@@ -1,6 +1,46 @@
 # GNNs Mini Competition: GitHub Social Network Classification
 <p align="center">What if we could predict user characteristics just by looking at how they connect with others?</p>
 
+## Repository Structure
+
+Here is an overview of the repository and its key components:
+```
+OctoNode_Cup/
+├── .github/
+│   └── workflows/
+│       ├── publish_leaderboard.yml
+│       └── score_submission.yml        
+├── competition/
+│   ├── config.yaml
+│   ├── evaluate.py
+│   ├── metrics.py
+│   ├── render_leaderboard.py
+│   └── validate_submission.py
+├── data/
+│   ├── adjacency_matrix.npz
+│   ├── musae_git_edges.csv
+│   ├── musae_git_features.json
+│   ├── node_features.npy
+│   ├── test_target_without_labels.csv
+│   └── train_target.csv
+├── docs/
+│   ├── leaderboard.css
+│   ├── leaderboard.html
+│   └── leaderboard.js
+├── images/
+│   └── graph_visualization.png
+├── leaderboard/
+│   ├── leaderboard.csv
+│   └── leaderboard.md
+├── starter_code/
+│   └── baseline.py
+├── submissions/
+│   └── example_submission.csv
+├── README.md
+└── requirements.txt
+
+```
+
 ## 💢Problem Description
 The goal of this challenge is to perform binary node classification on a real-world GitHub social network graph. In this graph, each node represents a GitHub user, and edges represent social connections between users.
 
