@@ -7,7 +7,7 @@ def main(pred_path, test_nodes_path):
     test_nodes = pd.read_csv(test_nodes_path)
 
     if "id" not in preds.columns or "ml_target" not in preds.columns:
-        raise ValueError("predictions.csv must contain id and y_pred")
+        raise ValueError("predictions.csv must contain id and ml_target")
 
     if preds["id"].duplicated().any():
         raise ValueError("Duplicate IDs found")
