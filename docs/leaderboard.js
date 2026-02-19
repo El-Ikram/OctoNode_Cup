@@ -53,11 +53,10 @@ function renderTable(){
     const cells = [
       ["rank", rank],
       ["team", r.team],
-      ["model", r.model],
       ["score", r.score],
       ["timestamp_utc", r.timestamp_utc],
-      ["notes", r.notes || ""],
     ];
+    
     cells.forEach(([k, v]) => {
       const td = document.createElement("td");
       td.dataset.key = k;
@@ -113,7 +112,7 @@ function updateStats(rows){
   const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
   document.getElementById("statAvg").textContent = avg.toFixed(4);
 
-  // Most used model
+  /*// Most used model
   const modelCount = {};
   rows.forEach(r => {
     if (!r.model) return;
@@ -123,21 +122,21 @@ function updateStats(rows){
   const topModel = Object.entries(modelCount)
     .sort((a, b) => b[1] - a[1])[0][0];
 
-  document.getElementById("statModel").textContent = topModel.toUpperCase();
+  document.getElementById("statModel").textContent = topModel.toUpperCase();*/
 }
 
 
 
 function applyFilters(){
   const q = document.getElementById("search").value.toLowerCase().trim();
-  const model = document.getElementById("modelFilter").value;
+  //const model = document.getElementById("modelFilter").value;
   const date = document.getElementById("dateFilter").value;
 
   let rows = [...state.rows];
-
+/*
   if(model !== "all"){
     rows = rows.filter(r => (r.model || "").toLowerCase() === model);
-  }
+  }*/
 
   if(date !== "all"){
     const maxDays = (date === "last30") ? 30 : 180;
@@ -146,7 +145,7 @@ function applyFilters(){
 
   if(q){
     rows = rows.filter(r => {
-      const hay = `${r.team} ${r.model} ${r.notes} ${r.timestamp_utc}`.toLowerCase();
+      const hay = `${r.team} ${r.timestamp_utc}`.toLowerCase();
       return hay.includes(q);
     });
   }
@@ -196,11 +195,10 @@ function setupColumnToggles(){
   const cols = [
     ["rank","Rank"],
     ["team","Team"],
-    ["model","Model"],
     ["score","Score"],
     ["timestamp_utc","Date (UTC)"],
-    ["notes","Notes"],
   ];
+  
   const wrap = document.getElementById("columnToggles");
   wrap.innerHTML = "";
   cols.forEach(([k,label]) => {
@@ -254,13 +252,12 @@ async function main(){
       .map(r => ({
         timestamp_utc: r.timestamp_utc,
         team: r.team,
-        model: (r.model || "").toLowerCase(),
         score: r.score,
-        notes: r.notes || "",
       }));
+      
 
     state.rows = cleaned;
-
+/*
     // fill model options
     const modelSet = new Set(cleaned.map(r => r.model).filter(Boolean));
     const sel = document.getElementById("modelFilter");
@@ -269,14 +266,14 @@ async function main(){
       opt.value = m;
       opt.textContent = m;
       sel.appendChild(opt);
-    });
+    });*/
 
     setupColumnToggles();
     setupSorting();
     
 
     document.getElementById("search").addEventListener("input", applyFilters);
-    document.getElementById("modelFilter").addEventListener("change", applyFilters);
+    //document.getElementById("modelFilter").addEventListener("change", applyFilters);
     document.getElementById("dateFilter").addEventListener("change", applyFilters);
 
     // default: sort by score desc
