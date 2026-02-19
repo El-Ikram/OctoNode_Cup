@@ -71,6 +71,18 @@ The GitHub Social Network dataset used in this challenge is publicly available t
 
 🔗 **Dataset link:**  [Dataset](https://snap.stanford.edu/data/github-social.html)
 
+### Graph Visualization (Subgraph)
+
+The figure below shows a subgraph extracted from the original MUSAE GitHub dataset.
+
+Due to the large size and high density of the full graph, only a subset of nodes and their corresponding edges are visualized for clarity.
+
+Nodes represent GitHub users and edges represent follower relationships.
+<p align="center">
+  <img src="images/graph_visualization.png" width="600">
+</p>
+
+
 ## <img width="40" height="40" alt="image" src="https://github.com/user-attachments/assets/6e05cfef-3064-4d6d-bf4b-ea9259f21e11" />Evaluation Metric
 
 The challenge is evaluated using **Macro F1-score**.
