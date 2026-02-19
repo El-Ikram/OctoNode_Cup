@@ -108,6 +108,12 @@ Macro F1 = (F1_class_0 + F1_class_1) / 2
 
 Submissions will be ranked by **Macro F1-score on the hidden test set**. Higher Macro F1 values indicate better overall classification quality across all classes.
 
+## Difficulties and Challenges
+
+This mini-challenge presents several challenges commonly encountered in real-world graph learning tasks:
+- High-dimensional sparse node features.
+- Class imbalance across labels.
+
 ## ⚠️Constraints
 To ensure fair competition:
 1. No External Data, only the data provided for this challenge may be used.
@@ -146,11 +152,9 @@ The competition features a **dynamic, automatically updated leaderboard**.
 
 [View the live leaderboard](https://El-Ikram.github.io/OctoNode_Cup/leaderboard.html)
 
-📋 **Registration Form:** [Fill out this Google Form](https://docs.google.com/forms/d/e/1FAIpQLSewxnXsxIdUqJRO_LFKe2cYDwgy77gOi1SL546cuJcCKVXyGg/viewform?usp=publish-editor)
-
 
 ## 🗓️Timeline
-Start Date: 02/15/2026
+Start Date: 02/20/2026
 
 Submission Deadline: 03/15/2026
 
