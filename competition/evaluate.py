@@ -11,14 +11,14 @@ def main(pred_path, label_path):
     labels = pd.read_csv(label_path)
 
     # Validate required columns
-    required_pred_cols = {"id", "y_pred"}
-    required_label_cols = {"id", "y_true"}
+    required_pred_cols = {"id", "ml_target"}
+    required_label_cols = {"id", "ml_target"}
 
     if not required_pred_cols.issubset(preds.columns):
-        raise ValueError("Prediction file must contain columns: id, y_pred")
+        raise ValueError("Prediction file must contain columns: id, ml_target")
 
     if not required_label_cols.issubset(labels.columns):
-        raise ValueError("Label file must contain columns: id, y_true")
+        raise ValueError("Label file must contain columns: id, ml_target")
 
     # Check duplicate IDs
     if preds["id"].duplicated().any():
@@ -36,7 +36,7 @@ def main(pred_path, label_path):
         raise ValueError("Submission IDs do not match test IDs exactly")
 
     # Compute score
-    score = macro_f1(labels["y_true"], preds["y_pred"])
+    score = macro_f1(labels["ml_target"], preds["ml_target"])
 
     print(f"SCORE={score:.8f}")
 
