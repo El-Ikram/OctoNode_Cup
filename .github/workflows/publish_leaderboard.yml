@@ -31,6 +31,9 @@ jobs:
       - name: Ensure on main branch
         run: git switch main
 
+      - name: Ensure on main branch
+        run: git checkout main
+
       - name: Commit rendered leaderboard
         run: |
           if git diff --quiet; then
