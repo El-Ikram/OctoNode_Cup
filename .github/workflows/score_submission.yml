@@ -12,52 +12,40 @@ jobs:
   score:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Competition Repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: main  # Checkout main to update the leaderboard
+          ref: main # Target the main branch where the leaderboard lives
           fetch-depth: 0
 
-      - name: Get Submission File
+      - name: Get Submission
         run: |
-          git fetch origin pull/${{ github.event.pull_request.number }}/head:tmp_branch
-          git checkout tmp_branch -- submissions/submission.csv
+          git fetch origin pull/${{ github.event.pull_request.number }}/head:tmp_pr
+          git checkout tmp_pr -- submissions/
           git checkout main
-
-      - name: Checkout Private Eval Repo
-        uses: actions/checkout@v4
-        with:
-          repository: El-Ikram/Help_repo
-          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
-          path: private_eval
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
 
       - name: Evaluate
         id: eval
         run: |
           pip install pandas
-          # Run validation
+          # Run your scripts
           python competition/validate_submission.py submissions/submission.csv data/test_target_without_labels.csv
-          # Run evaluation
           SCORE=$(python competition/evaluate.py submissions/submission.csv private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
           echo "score=$SCORE" >> $GITHUB_OUTPUT
 
       - name: Update CSV
         run: |
-          # Ensure CSV header exists if file is new
+          # Ensure header exists
           if [ ! -f leaderboard/leaderboard.csv ]; then
             echo "team,model,score,timestamp_utc,notes" > leaderboard/leaderboard.csv
           fi
-          echo "${{ github.actor }},GCN,${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ"),Auto" >> leaderboard/leaderboard.csv
+          echo "${{ github.actor }},GNN,${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ"),Auto" >> leaderboard/leaderboard.csv
 
       - name: Commit and Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add leaderboard/leaderboard.csv
-          git commit -m "New score: ${{ github.actor }}"
-          git push origin HEAD:main # The "HEAD:main" fixes the detached HEAD error
+          git commit -m "Update score for ${{ github.actor }}"
+          # THIS LINE FIXES THE DETACHED HEAD ERROR
+          git push origin HEAD:main
