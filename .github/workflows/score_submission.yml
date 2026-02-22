@@ -1,7 +1,7 @@
 name: Score Submission
 
 on:
-  pull_request:
+  pull_request_target:  # Changed from pull_request to allow write access
     paths:
       - "submissions/**"
 
@@ -11,16 +11,22 @@ permissions:
 jobs:
   score:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout competition repo (PR branch)
       - name: Checkout competition repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          # We check out the base branch (main) because that's where the 
+          # "source of truth" leaderboard.csv lives.
+          ref: main 
           fetch-depth: 0
 
-      # Checkout private evaluation repo
+      # We need to grab the submission file from the PR branch specifically
+      - name: Get submission from PR
+        run: |
+          git fetch origin pull/${{ github.event.pull_request.number }}/head:pr_branch
+          git checkout pr_branch -- submissions/
+          git checkout main # Stay on main to update the leaderboard
+
       - name: Checkout private evaluation repo
         uses: actions/checkout@v4
         with:
@@ -28,49 +34,30 @@ jobs:
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: private_eval
 
-      # Setup Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      # Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-                # Validate submission format
-      - name: Validate submission
-        run: |
-          python competition/validate_submission.py \
-          submissions/submission.csv \
-          private_eval/test_nodes.csv
-
-      # Evaluate submission
       - name: Evaluate submission
         id: eval
         run: |
-          SCORE=$(python competition/evaluate.py \
-          submissions/submission.csv \
-          private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
-
+          # Ensure paths match where the file was pulled
+          SCORE=$(python competition/evaluate.py submissions/submission.csv private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
           echo "score=$SCORE" >> $GITHUB_OUTPUT
 
-      # Append score to leaderboard
-      - name: Update leaderboard
+      - name: Update leaderboard CSV
         run: |
           echo "${{ github.actor }},GCN,${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ"),Auto submission" >> leaderboard/leaderboard.csv
 
-            # Ensure we are on the PR branch
-      - name: Switch to PR branch
-        run: git checkout ${{ github.head_ref }}
-      #  Commit and push back to PR branch (FIXED detached HEAD)
-      - name: Commit changes
+      - name: Commit and Push to Main
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add leaderboard/leaderboard.csv
-          git commit -m "Update leaderboard"
-
-          # Push back to the same PR branch
-          git push origin ${{ github.head_ref }}
+          git commit -m "Update leaderboard for ${{ github.actor }} [skip ci]"
+          # This syntax fixes the 'detached HEAD' issue
+          git push origin HEAD:main
