@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "leaderboard/leaderboard.csv" # Triggers when the CSV is updated
+      - "leaderboard/leaderboard.csv"
 
 jobs:
   render:
@@ -13,21 +13,35 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          ref: main
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Render leaderboard markdown
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Render leaderboard (HTML and MD)
         run: |
+          # Ensure your script writes to 'docs/leaderboard.html' and 'leaderboard/leaderboard.md'
           python competition/render_leaderboard.py
 
-      - name: Commit rendered leaderboard
+      - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add all modified leaderboard files
           git add leaderboard/leaderboard.md
-          # Only commit if there are changes
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-render leaderboard [skip ci]"
-          git push origin HEAD:main
+          git add docs/leaderboard.html
+          
+          # Only push if something actually changed
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Auto-update leaderboard display [skip ci]"
+            git push origin HEAD:main
+          fi
