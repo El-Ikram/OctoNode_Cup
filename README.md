@@ -215,6 +215,28 @@ The competition features a **dynamic, automatically updated leaderboard**.
 [View the live leaderboard](https://El-Ikram.github.io/OctoNode_Cup/leaderboard.html)
 
 
+## ⚡Quick Start
+1. First, fork this repository to your GitHub account. Then clone your fork locally:
+```
+git clone https://github.com/El-Ikram/OctoNode_Cup.git
+cd REPOSITORY-NAME
+```
+2. Create a Virtual Environment (Recommended):
+```
+python -m venv venv
+source venv/bin/activate  # macOS / Linux
+venv\Scripts\activate     # Windows
+```
+3. Install Dependencies:
+```
+pip install -r requirements.txt
+```
+4. Use the provided starter code to train your first model.
+5. Generate Your Submission File.
+6. Encrypt Your Submission.
+7. Submit via Pull Request.
+8. Check the Leaderboard.
+  
 ## 🗓️Timeline
 Start Date: 02/20/2026
 
