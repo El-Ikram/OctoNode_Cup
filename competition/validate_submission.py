@@ -1,27 +1,38 @@
+# competition/validate_submission.py
 
 import pandas as pd
 import sys
+
+
+REQUIRED_COLUMNS = {"id", "ml_target"}
+
 
 def main(pred_path, test_nodes_path):
     preds = pd.read_csv(pred_path)
     test_nodes = pd.read_csv(test_nodes_path)
 
-    if "id" not in preds.columns or "ml_target" not in preds.columns:
-        raise ValueError("predictions.csv must contain id and ml_target")
+    # Required columns
+    if not REQUIRED_COLUMNS.issubset(preds.columns):
+        raise ValueError("Submission must contain columns: id, ml_target")
 
+    # Duplicate IDs
     if preds["id"].duplicated().any():
-        raise ValueError("Duplicate IDs found")
+        raise ValueError("Duplicate IDs found in submission")
 
+    # No NaNs
     if preds["ml_target"].isna().any():
-        raise ValueError("NaN predictions found")
+        raise ValueError("NaN values found in predictions")
 
-    if ((preds["ml_target"] < 0) | (preds["ml_target"] > 1)).any():
-        raise ValueError("Predictions must be in [0,1]")
+    # Strict binary check (0 or 1 only)
+    if not set(preds["ml_target"].unique()).issubset({0, 1}):
+        raise ValueError("Predictions must be binary: 0 or 1")
 
+    # Exact ID match
     if set(preds["id"]) != set(test_nodes["id"]):
-        raise ValueError("Prediction IDs do not match test nodes")
+        raise ValueError("Submission IDs do not match required test IDs")
 
-    print("VALID SUBMISSION")
+    print("VALID_SUBMISSION")
+
 
 if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2])
