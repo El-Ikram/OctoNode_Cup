@@ -1,7 +1,7 @@
 name: Score Submission
 
 on:
-  pull_request:
+  pull_request_target:
     paths:
       - "submissions/**/*.enc"
 
@@ -13,12 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main
+      # 1️⃣ Checkout the PR branch
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
 
+      # 2️⃣ Checkout private evaluation repo
       - name: Checkout private evaluation repo
         uses: actions/checkout@v4
         with:
@@ -26,30 +27,65 @@ jobs:
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: private_eval
 
+      # 3️⃣ Setup Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
+      # 4️⃣ Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Get submission file
-        id: file
+      # 5️⃣ List repo structure for debugging
+      - name: Debug repo structure
         run: |
-          FILE=$(find submissions -name "*.enc" | head -n 1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "Listing all files recursively:"
+          ls -R
 
+      # 6️⃣ Find all .enc files recursively
+      - name: Find submission files
+        id: files
+        run: |
+          FILES=$(find submissions -type f -name "*.enc")
+          echo "All .enc files found:"
+          echo "$FILES"
+          FIRST_FILE=$(echo "$FILES" | head -n 1)
+          echo "First file to process: $FIRST_FILE"
+          echo "file=$FIRST_FILE" >> $GITHUB_OUTPUT
+
+      # 7️⃣ Check submission file exists
+      - name: Check submission file
+        run: |
+          if [ -z "${{ steps.files.outputs.file }}" ]; then
+            echo "ERROR: No .enc submission file found in submissions/"
+            exit 1
+          fi
+          echo "Submission file exists: ${{ steps.files.outputs.file }}"
+
+      # 8️⃣ Check that private key secret is set
+      - name: Check private key secret
+        run: |
+          if [ -z "$SUBMISSION_PRIVATE_KEY" ]; then
+            echo "ERROR: SUBMISSION_PRIVATE_KEY is not set!"
+            exit 1
+          fi
+          echo "Private key secret is set."
+        env:
+          SUBMISSION_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
+      # 9️⃣ Decrypt submission
       - name: Decrypt submission
         env:
-          SUBMISSION_PRIVATE_KEY: ${{ secrets.SUBMISSION_PRIVATE_KEY }}
+          SUBMISSION_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
-          python encryption/decrypt.py "${{ steps.file.outputs.file }}"
+          python encryption/decrypt.py "${{ steps.files.outputs.file }}"
 
+      # 🔟 Evaluate submission
       - name: Evaluate submission
         id: eval
         run: |
-          CSV_FILE="${{ steps.file.outputs.file }}"
+          CSV_FILE="${{ steps.files.outputs.file }}"
           CSV_FILE="${CSV_FILE%.enc}.csv"
 
           SCORE=$(python competition/evaluate.py \
@@ -58,10 +94,12 @@ jobs:
 
           echo "score=$SCORE" >> $GITHUB_OUTPUT
 
+      # 1️⃣1️⃣ Append to leaderboard
       - name: Append to leaderboard
         run: |
           echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
 
+      # 1️⃣2️⃣ Commit leaderboard
       - name: Commit leaderboard
         run: |
           git config user.name "github-actions[bot]"
