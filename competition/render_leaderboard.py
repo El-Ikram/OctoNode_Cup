@@ -6,7 +6,7 @@ from datetime import datetime
 from html import escape
 
 ROOT = Path(__file__).resolve().parents[1]
-CSV_PATH = ROOT / "leaderboard" / "leaderboard.csv"
+CSV_PATH = ROOT / "docs" / "leaderboard.csv"
 MD_PATH = ROOT / "leaderboard" / "leaderboard.md"
 HTML_PATH = ROOT / "docs" / "leaderboard.html"
 
