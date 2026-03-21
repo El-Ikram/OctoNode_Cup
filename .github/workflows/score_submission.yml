@@ -1,3 +1,4 @@
+
 name: Score Submission
 
 on:
@@ -23,6 +24,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Check token exists
+        run: |
+          if [ -z "${{ secrets.PRIVATE_REPO_TOKEN }}" ]; then
+            echo "TOKEN IS EMPTY ❌"
+            exit 1
+          else
+            echo "TOKEN EXISTS ✅"
+          fi
 
       # Checkout private evaluation repo
       - name: Checkout private evaluation repo
