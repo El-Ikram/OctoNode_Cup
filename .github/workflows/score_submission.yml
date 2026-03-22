@@ -110,9 +110,9 @@ jobs:
           echo "score=$SCORE" >> $GITHUB_OUTPUT
 
       # Append to leaderboard
-      - name: Append to leaderboard
-        run: |
-          echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
+      #- name: Append to leaderboard
+      #  run: |
+         # echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
 
       # Commit leaderboard
       - name: Commit leaderboard
@@ -120,9 +120,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
+          # Always start from latest main
           git fetch origin main
           git checkout main
-          git pull origin main --rebase
+          git reset --hard origin/main
+      
+          # Now apply your change
+          echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
       
           git add docs/leaderboard.csv
           git commit -m "Leaderboard update for ${{ github.actor }}" || exit 0
