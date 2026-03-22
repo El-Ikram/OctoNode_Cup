@@ -97,23 +97,53 @@ jobs:
           python encryption/decrypt.py "${{ steps.files.outputs.file }}"
 
       # Evaluate submission
+     # - name: Evaluate submission
+       # id: eval
+      #  run: |
+        #  CSV_FILE="${{ steps.files.outputs.file }}"
+        #  CSV_FILE="${CSV_FILE%.enc}.csv"
+
+         # SCORE=$(python competition/evaluate.py \
+         # "$CSV_FILE" \
+        #  private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
+
+         # echo "score=$SCORE" >> $GITHUB_OUTPUT
+
+      # Append to leaderboard
+     # - name: Append to leaderboard
+      #  run: |
+       #   echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
+
+            # Evaluate submission
       - name: Evaluate submission
         id: eval
         run: |
           CSV_FILE="${{ steps.files.outputs.file }}"
           CSV_FILE="${CSV_FILE%.enc}.csv"
 
-          SCORE=$(python competition/evaluate.py \
+          echo "Running evaluation..."
+          
+          OUTPUT=$(python competition/evaluate.py \
           "$CSV_FILE" \
-          private_eval/test_labels.csv | grep SCORE | cut -d "=" -f2)
+          private_eval/test_labels.csv)
+
+          echo "===== Evaluation Output ====="
+          echo "$OUTPUT"
+          echo "============================="
+
+          # Extract SCORE safely
+          SCORE=$(echo "$OUTPUT" | sed -n 's/^SCORE=//p')
+
+          echo "Extracted SCORE: $SCORE"
+
+          # Fail if score is empty
+          if [ -z "$SCORE" ]; then
+            echo "ERROR: Score extraction failed!"
+            exit 1
+          fi
 
           echo "score=$SCORE" >> $GITHUB_OUTPUT
-
-      # Append to leaderboard
-      - name: Append to leaderboard
-        run: |
-          echo "${{ github.actor }},${{ steps.eval.outputs.score }},$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> docs/leaderboard.csv
-
+      
       # Commit leaderboard
       - name: Commit leaderboard
         run: |
