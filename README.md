@@ -71,7 +71,7 @@ The GitHub Social Network dataset represents a real-world developer network wher
 The dataset contains:
 * musae_git_edges.csv → Graph edges (source, target).
 
-* musae_git_features.json → Node feature vectors.
+* node_features.npy → Node feature vectors.
 
 * train_target.csv → Training labels.
 
@@ -80,7 +80,7 @@ The dataset contains:
 Graph Statistics:
 * Nodes: ~37K.
 * Edges: ~289K.
-* Features: 128-dimensional node features.
+* Features: 42-dimensional node features.
 * Task: Binary classification.
 
 The dataset is split as follows:
